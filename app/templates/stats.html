@@ -46,7 +46,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectGameModalLabel">Steam Login</h5>
+                <h5 class="modal-title" id="selectGameModalLabel">Select A Game</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -71,36 +71,80 @@
 </div>
 
 <!--Fortnite Stats Modal-->
+<div class="modal fade" id="fortniteModal" tabindex="-1" role="dialog" aria-labelledby="fortniteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fortniteModalLabel">Fortnite Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="platformId">Enter your gaming platform </label>
+                        <input id="platformId" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="epicId">Enter your epic username </label>
+                        <input id="epicId" type="text" />
+                    </div>
+            </div>
+            <p class="bg-danger" style="font-size: x-small;">Disclaimer: KBM is the PC platform <br> Gamepad references
+                the PS4, Xbox and Switch consoles <br> Touch references the phone platform </p>
+            <button type="button" class="btn btn-outline-primary" id="steamId" onclick="handleLogin()">Submit</button>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<body onload="callEverything()">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#selectGameModal">
+<body onload="getApexStats()">
+    <button type="button" class="btn btn-primary text-right" data-toggle="modal" data-target="#selectGameModal">
         Select A Game
     </button>
-    <!-- <div>
+    <button id="fortniteDetails" style="display: none;" type="button" class="btn btn-primary text-right"
+        data-toggle="modal" data-target="#fortniteModal">
+        Enter Fortnite Details
+    </button>
+    <div class="container">
         <h3 id="wins"></h3>
         <p id="top5"></p>
         <p id="top10"></p>
         <p id="matchesPlayed"></p>
         <p id="kills"></p>
         <h3 id="kd"></h3>
-    </div> -->
+    </div>
+
+    <div class="container">
+        <h3 id="alWins"></h3>
+        <p id="alKills"></p>
+        <p id="headshots"></p>
+        <p id="rankScore"></p>
+        <p id="level"></p>
+        <h3 id="activeLegend"></h3>
+        <p></p>
+    </div>
 </body>
 
 <script>
-    function callEverything() {
-        getFnStats();
-        getApexStats();
+    function handleClick() {
+        document.getElementById("fortniteDetails").style = "display: block"
     }
 </script>
 
 <script>
-    function handleClick() {
-        document.getElementById("apex").checked ? getApexStats() : getFnStats()
+    function handleLogin() {
+        getFnStats(document.getElementById("platformId").value, document.getElementById("epicId").value)
     }
 </script>
-<!--Fortnite API-->
+<!--Fortnite API Call-->
 <script>
-    async function getFnStats() {
+    async function getFnStats(platform, epicid) {
         var myHeaders = new Headers();
         myHeaders.append("TRN-Api-Key", "c824218b-5c57-4282-9955-dee41ae9af62");
 
@@ -117,7 +161,7 @@
         const kdratio = document.getElementById('kd')
 
         const res = await fetch(
-                "https://cors-anywhere.herokuapp.com/https://api.fortnitetracker.com/v1/profile/kbm/AssassinOCE",
+                `https://cors-anywhere.herokuapp.com/https://api.fortnitetracker.com/v1/profile/${platform}/${epicid}`,
                 requestOptions)
             .then(res => res.json());
         console.log(res)
@@ -130,6 +174,7 @@
     }
 </script>
 
+<!--Apex Legends API Call-->
 <script>
     async function getApexStats() {
         var myHeaders = new Headers();
@@ -140,24 +185,24 @@
             headers: myHeaders,
             redirect: 'follow'
         };
-        const top10 = document.getElementById('top10');
-        const top5 = document.getElementById('top5');
-        const wins = document.getElementById('wins');
-        const matchesPlayed = document.getElementById('matchesPlayed')
-        const kills = document.getElementById('kills')
-        const kdratio = document.getElementById('kd')
+        const alKills = document.getElementById('alKills');
+        const headshots = document.getElementById('headshots');
+        const alWins = document.getElementById('alWins');
+        const level = document.getElementById('level')
+        const rankScore = document.getElementById('rankScore')
+        const activeLegend = document.getElementById('activeLegend')
 
         const res = await fetch(
                 "https://cors-anywhere.herokuapp.com/https://public-api.tracker.gg/v2/apex/standard/profile/origin/fully_assassin",
                 requestOptions)
             .then(res => res.json());
         console.log(res)
-        /*wins.innerHTML = `${res.lifeTimeStats[8].value} total wins`
-        top5.innerHTML = `You were top 5, ${res.lifeTimeStats[0].value} times `
-        top10.innerHTML = `You were top 10, ${res.lifeTimeStats[3].value} times`
-        matchesPlayed.innerHTML = `You've played ${res.lifeTimeStats[7].value} matches`
-        kills.innerHTML = `You have ${res.lifeTimeStats[10].value} kills`
-        kd.innerHTML = `${res.lifeTimeStats[11].value}kd`*/
+        alKills.innerHTML = `${res.data.segments[0].stats.kills.displayValue} total Kills!`
+        headshots.innerHTML = `${res.data.segments[0].stats.headshots.displayValue} total Headshots!`
+        alWins.innerHTML = `${res.data.segments[0].stats.season4Wins.displayValue} total Wins!`
+        level.innerHTML = `Level ${res.data.segments[0].stats.level.displayValue}`
+        rankScore.innerHTML = `Rank Score: ${res.data.segments[0].stats.rankScore.displayValue}`
+        activeLegend.innerHTML = `Current Legend: ${res.data.metadata.activeLegendName}`
     }
 </script>
 

@@ -28,11 +28,11 @@
         <a class="nav-link" href="/stats">Stats</a>
       </li>
     </ul>
-    <li class="list-inline-item" style="margin-right: 40px;">
+    <!-- <li class="list-inline-item" style="margin-right: 40px;">
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#steamModal">
         Access Steam Game List
       </button>
-    </li>
+    </li> -->
     </ul>
   </div>
   <div>
@@ -80,6 +80,16 @@
   <div>
     <!--Current Steam Games-->
     <h1 class="display-4" style="text-align: center">Made by Gamers for Gamers</h1>
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <button id="steamToggle" type="button" class=" text-center btn btn-primary" data-toggle="modal"
+            data-target="#steamModal" style="margin-top:20px">
+            Access Steam Game List
+          </button>
+        </div>
+      </div>
+    </div>
 
     <ul class="list-inline" id="top5" style="display: flex !important; margin: 80px 0px 70px 10px">
     </ul>
@@ -132,6 +142,7 @@
           div.appendChild(phours)
           li.appendChild(div)
           document.getElementById("top5").appendChild(li)
+          document.getElementById("steamToggle").style = "display: none"
         })
 
         /*gameName.innerHTML = `${res.response.games[0].name}`;
