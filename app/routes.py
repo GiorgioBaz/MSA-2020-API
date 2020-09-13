@@ -5,17 +5,28 @@ Task = models.Task
 
 @app.route('/')
 def index():
-    title = 'My Personal Todo Application!'
-    tasks = Task.query.all()
-    return render_template("index.html", title=title, tasks=tasks)
+    return render_template("index.html")
 
+@app.route('/steam/', methods = ['GET'])
+def getSteamGames():
+    steamId = request.form.get('steamId')
+
+    # getGames(steamId)
+    return redirect(url_for('index'))
+
+@app.route('/stats')
+def add_stats():
+    return render_template("stats.html")
 @app.route('/task/', methods=['POST'])
 def add_item():
+    # Get data from form fields taskName and taskDescription
     taskName = request.form.get('taskName')
     taskDescription = request.form.get('taskDescription')
-
+    
+    # Put data into a new Task item
     new_item = Task(name=taskName, description=taskDescription)
-
+    
+    # Add and commit the changes to the database
     db.session.add(new_item)
     db.session.commit()
     return redirect(url_for('index'))
