@@ -39,19 +39,65 @@
         <img src="../static/logo.png" alt="Logo" />
     </div>
 </nav>
-<!--/.Navbar -->
 
-<body onload="getFnStats()">
-    <div>
+<!--Select Game Modal-->
+<div class="modal fade" id="selectGameModal" tabindex="-1" role="dialog" aria-labelledby="selectGameModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectGameModalLabel">Steam Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="fortnite" value="option1"> Fortnite
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="apex" value="option2"> Apex Legends
+                    </label>
+            </div>
+            <button type="button" class="btn btn-outline-primary" id="steamId"
+                onclick="handleClick(this)">Submit</button>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Fortnite Stats Modal-->
+
+<body onload="callEverything()">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#selectGameModal">
+        Select A Game
+    </button>
+    <!-- <div>
         <h3 id="wins"></h3>
         <p id="top5"></p>
         <p id="top10"></p>
         <p id="matchesPlayed"></p>
         <p id="kills"></p>
         <h3 id="kd"></h3>
-    </div>
+    </div> -->
 </body>
 
+<script>
+    function callEverything() {
+        getFnStats();
+        getApexStats();
+    }
+</script>
+
+<script>
+    function handleClick() {
+        document.getElementById("apex").checked ? getApexStats() : getFnStats()
+    }
+</script>
 <!--Fortnite API-->
 <script>
     async function getFnStats() {
@@ -81,6 +127,37 @@
         matchesPlayed.innerHTML = `You've played ${res.lifeTimeStats[7].value} matches`
         kills.innerHTML = `You have ${res.lifeTimeStats[10].value} kills`
         kd.innerHTML = `${res.lifeTimeStats[11].value}kd`
+    }
+</script>
+
+<script>
+    async function getApexStats() {
+        var myHeaders = new Headers();
+        myHeaders.append("TRN-Api-Key", "c824218b-5c57-4282-9955-dee41ae9af62");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        const top10 = document.getElementById('top10');
+        const top5 = document.getElementById('top5');
+        const wins = document.getElementById('wins');
+        const matchesPlayed = document.getElementById('matchesPlayed')
+        const kills = document.getElementById('kills')
+        const kdratio = document.getElementById('kd')
+
+        const res = await fetch(
+                "https://cors-anywhere.herokuapp.com/https://public-api.tracker.gg/v2/apex/standard/profile/origin/fully_assassin",
+                requestOptions)
+            .then(res => res.json());
+        console.log(res)
+        /*wins.innerHTML = `${res.lifeTimeStats[8].value} total wins`
+        top5.innerHTML = `You were top 5, ${res.lifeTimeStats[0].value} times `
+        top10.innerHTML = `You were top 10, ${res.lifeTimeStats[3].value} times`
+        matchesPlayed.innerHTML = `You've played ${res.lifeTimeStats[7].value} matches`
+        kills.innerHTML = `You have ${res.lifeTimeStats[10].value} kills`
+        kd.innerHTML = `${res.lifeTimeStats[11].value}kd`*/
     }
 </script>
 

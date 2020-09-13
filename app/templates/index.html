@@ -39,7 +39,7 @@
     <img src="../static/logo.png" alt="Logo" />
   </div>
 </nav>
-<!--/.Navbar -->
+
 
 <!--SteamId Modal-->
 <div class="modal fade" id="steamModal" tabindex="-1" role="dialog" aria-labelledby="steamModalLabel"
@@ -53,22 +53,22 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="/steam/" method="GET">
+        <form>
           <div class="form-group">
-            <label for="steamId">Enter your 17-digit steam ID </label>
-            <input class="steamId" type="text" />
+            <label for="steamId">Enter your 17-digit steam ID: </label>
+            <input id="steamId" type="text" />
           </div>
-        </form>
       </div>
+      <button type="button" class="btn btn-outline-primary" id="steamId" onclick="handleClick()">Submit</button>
+      </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Login</button>
       </div>
     </div>
   </div>
 </div>
 
-<body onload="getGames()">
+<body>
   <style type="text/css">
     body {
       background-color: gray;
@@ -84,6 +84,11 @@
     <ul class="list-inline" id="top5" style="display: flex !important; margin: 80px 0px 70px 10px">
     </ul>
 
+    <script>
+      function handleClick() {
+        getGames(document.getElementById('steamId').value)
+      }
+    </script>
     <!--SteamAPI call and game filter-->
     <script>
       //Gets the top 5 most played games
@@ -96,14 +101,14 @@
         games.sort(compare)
         return games.slice(0, 5)
       }
-
       //SteamAPI call
-      async function getGames() {
+      async function getGames(steamId) {
         const res = await fetch(
-            "https://cors-anywhere.herokuapp.com/http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=51308B81C43F32B31D29980442A2CDF0&steamid=76561198188867330&include_appinfo=true&include_played_free_games=true&format=json"
+            `https://cors-anywhere.herokuapp.com/http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=51308B81C43F32B31D29980442A2CDF0&steamid=${steamId}&include_appinfo=true&include_played_free_games=true&format=json`
           )
           .then(res => res.json());
         let games = getTop5(res.response.games)
+        document.getElementById("top5").innerHTML = ""
         games.map((game) => {
           console.log(game)
           let li = document.createElement("li")
@@ -136,6 +141,7 @@
           `http://media.steampowered.com/steamcommunity/public/images/apps/${appId}/${res.response.games[0].img_logo_url}.jpg`*/
       }
     </script>
+
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
