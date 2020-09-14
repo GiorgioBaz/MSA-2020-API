@@ -314,7 +314,6 @@
                 `https://cors-anywhere.herokuapp.com/https://api.fortnitetracker.com/v1/profile/${platform}/${epicid}`,
                 requestOptions)
             .then(res => res.json());
-        console.log(res)
         wins.innerHTML = `${res.lifeTimeStats[8].value}`
         top5.innerHTML = `${res.lifeTimeStats[0].value}  `
         top10.innerHTML = `${res.lifeTimeStats[3].value}`
@@ -346,7 +345,6 @@
                 `https://cors-anywhere.herokuapp.com/https://public-api.tracker.gg/v2/apex/standard/profile/${platform}/${originId}`,
                 requestOptions)
             .then(res => res.json());
-        console.log(res)
         alKills.innerHTML = `${res.data.segments[0].stats.kills.displayValue}`
         headshots.innerHTML = `${res.data.segments[0].stats.headshots.displayValue}`
         alWins.innerHTML = `${res.data.segments[0].stats.season4Wins.displayValue}`

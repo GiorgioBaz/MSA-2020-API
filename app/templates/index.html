@@ -121,7 +121,6 @@
         let games = getTop5(res.response.games)
         document.getElementById("top5").innerHTML = ""
         games.map((game) => {
-          console.log(game)
           let li = document.createElement("li")
           li.classList.add("list-inline-item")
           li.style.flex = "1 1 100%"
