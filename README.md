@@ -22,7 +22,7 @@ In a windows terminal run the following commands on the repository folder
 2. `venv\Scripts\activate`
 3. `flask run`
 
-**If need be install flask with** 
+**If need be install flask with:** 
 * `pip install flask`
 
 ## Tech Stack
@@ -33,10 +33,10 @@ In a windows terminal run the following commands on the repository folder
 **Disclaimer: These are all my personal accounts, if you would like to add in your own id for steam make sure you don’t have a custom url on your profile.**
 
 #### Steam Credentials
-Steam 17-digit Key: 76561198188867330
+* Steam 17-digit Key: 76561198188867330
 #### Fortnite Credentials
-Gaming platform: kbm
-Epic username: AssassinOCE
+* Gaming platform: kbm
+* Epic username: AssassinOCE
 #### Apex Legends Credentials
-Gaming platform: origin
-Origin username: fully_assassin
+* Gaming platform: origin
+* Origin username: fully_assassin
