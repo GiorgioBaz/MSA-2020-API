@@ -8,7 +8,7 @@ The home page is quite simplistic, with a singular button which toggles a modal 
 The fetch statement calls the Steam API using the documentation in the link below. After the API is called my program takes that data and runs it through the script which determines your top 5 most played games. https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29. **Valid Credentials for all API calls are referenced at the bottom of this README**
 
 ### Game Statistics Page
-This page is where most of the work was completed, it features both the Fortnite and Apex Legends API calls. I styled this page using bootstrap’s modal, table and button features, which allowed me to structure all of the data which I received from the different APIs. The select game modal uses conditional rendering to display the enter Fortnite or/and apex legends details buttons. 
+This page is where most of the work was completed, it features both the Fortnite and Apex Legends API calls. I styled this page using bootstrap’s modal, table and button features, which allowed me to structure all of the data which I received from the different APIs. The select game modal uses conditional rendering to display the enter Fortnite and/or Apex Legends details buttons. 
 
 #### Fortnite Statistics
 The Fortnite Details modal requires you to enter in your platform (kbm, gamepad or touch) and your Epic Username. Once both these fields are populated the API is called and the data is displayed in a table. Documentation for the Fortnite API can be found at https://fortnitetracker.com/site-api **Valid Credentials for all API calls are referenced at the bottom of this README.** 
