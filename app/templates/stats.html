@@ -19,20 +19,15 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link" href="/">Home
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/stats">Stats</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="/stats">Game Stats</a>
             </li>
         </ul>
-        <!-- <li class="list-inline-item" style="margin-right: 40px;">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#steamModal">
-                Access Steam Game List
-            </button>
-        </li> -->
         </ul>
     </div>
     <div>
@@ -54,14 +49,17 @@
             <div class="modal-body">
                 <form>
                     <label class="radio-inline">
-                        <input type="radio" name="inlineRadioOptions" id="fortnite" value="option1"> Fortnite
+                        <input type="radio" name="inlineRadioOptions" id="fortnite" onclick="handleSubmit()"
+                            value="option1"> Fortnite
                     </label>
+                    <br>
                     <label class="radio-inline">
-                        <input type="radio" name="inlineRadioOptions" id="apex" value="option2"> Apex Legends
+                        <input type="radio" name="inlineRadioOptions" id="apex" onclick="handleSubmit()"
+                            value="option2"> Apex Legends
                     </label>
             </div>
-            <button type="button" class="btn btn-outline-primary" id="steamId"
-                onclick="handleClick(this)">Submit</button>
+            <button type="button" class="btn btn-outline-primary" id="selectGameId" onclick="handleClick()"
+                disabled="true">Submit</button>
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -86,15 +84,19 @@
                     <div class="form-group">
                         <label for="platformId">Enter your gaming platform </label>
                         <input id="platformId" type="text" />
+                        <small class="form-text text-muted">Either kbm, gamepad or touch (Lower Case
+                            Sensitive)</small>
                     </div>
                     <div class="form-group">
                         <label for="epicId">Enter your epic username </label>
                         <input id="epicId" type="text" />
+                        <small class="form-text text-muted">This is case sensitive</small>
                     </div>
             </div>
-            <p class="bg-danger" style="font-size: x-small;">Disclaimer: KBM is the PC platform <br> Gamepad references
-                the PS4, Xbox and Switch consoles <br> Touch references the phone platform </p>
-            <button type="button" class="btn btn-outline-primary" id="steamId" onclick="handleLogin()">Submit</button>
+            <p class="bg-danger" style="font-size: x-small;">Disclaimer: kbm is the PC platform <br> gamepad references
+                the PS4, Xbox and Switch consoles <br> touch references the phone platform </p>
+            <button type="button" class="btn btn-outline-primary" id="fortniteId"
+                onclick="handleFnLogin()">Submit</button>
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -103,45 +105,185 @@
     </div>
 </div>
 
-<body onload="getApexStats()">
-    <button type="button" class="btn btn-primary text-right" data-toggle="modal" data-target="#selectGameModal">
+<!--Apex Stats Modal-->
+<div class="modal fade" id="apexModal" tabindex="-1" role="dialog" aria-labelledby="apexModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="apexModalLabel">Apex Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="apexPlatformId">Enter your gaming platform </label>
+                        <input id="apexPlatformId" type="text" />
+                        <small class="form-text text-muted">Either origin, xbl or psn (Lower Case
+                            Sensitive)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="originId">Enter your origin username </label>
+                        <input id="originId" type="text" />
+                        <small class="form-text text-muted">Either origin id, xbox gamertag or psn id (Case
+                            Sensitive)</small>
+                    </div>
+            </div>
+            <p class="bg-danger" style="font-size: x-small;">Disclaimer: origin is the PC platform <br> xbl references
+                the Xbox platform <br> psn references the Playstation platform </p>
+            <p class="bg-danger" style="font-size: x-small;">Note: Origin Username references your: <br> Origin Id on pc
+                <br>
+                Xbox gamertag for Xbox <br> PSN ID for Playstation </p>
+            <button type="button" class="btn btn-outline-primary" id="fortniteId"
+                onclick="handleApexLogin()">Submit</button>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body>
+    <style type="text/css">
+        body {
+            background-color: gray;
+        }
+    </style>
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active" style="background-image: url(../static/gamecollage.jpg); height: 300px"></div>
+    </div>
+    <p class="display-4" style="text-align: center">Game Statistics Tracker</p>
+    <button type="button" class="btn btn-primary text-right" data-toggle="modal"
+        style="margin-top: 15px; margin-left: 15px; margin-bottom: 10px" data-target="#selectGameModal">
         Select A Game
     </button>
-    <button id="fortniteDetails" style="display: none;" type="button" class="btn btn-primary text-right"
-        data-toggle="modal" data-target="#fortniteModal">
-        Enter Fortnite Details
-    </button>
-    <div class="container">
-        <h3 id="wins"></h3>
-        <p id="top5"></p>
-        <p id="top10"></p>
-        <p id="matchesPlayed"></p>
-        <p id="kills"></p>
-        <h3 id="kd"></h3>
+
+    <div id="fortniteDetails" style="display: none;">
+        <img src="../static/fornitelogo.png" style="width: 40px !important; border-radius: 10px; margin-left:10px" />
+        <button style=" margin-top: 15px; margin-left: 10px; margin-bottom: 15px" type="button"
+            class="btn btn-outline-dark  text-right" data-toggle="modal" data-target="#fortniteModal">
+            <strong>Enter Fortnite Details</strong>
+        </button>
+
     </div>
 
-    <div class="container">
-        <h3 id="alWins"></h3>
-        <p id="alKills"></p>
-        <p id="headshots"></p>
-        <p id="rankScore"></p>
-        <p id="level"></p>
-        <h3 id="activeLegend"></h3>
-        <p></p>
+    <div>
+        <table style="display: none; width: 80%; margin: auto; margin-bottom: 15px" id="fnTable"
+            class="table table-hover text-center table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Wins</th>
+                    <th scope="col">Top 5</th>
+                    <th scope="col">Top 10</th>
+                    <th scope="col">Matches Played</th>
+                    <th scope="col">Kills</th>
+                    <th scope="col">Kd</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">
+                        <p id="wins"><strong></strong></p>
+                    </td>
+                    <td>
+                        <p id="top5"></p>
+                    </td>
+                    <td>
+                        <p id="top10"></p>
+                    </td>
+                    <td>
+                        <p id="matchesPlayed"></p>
+                    </td>
+                    <td>
+                        <p id="kills"></p>
+                    </td>
+                    <td>
+                        <p id="kd"><strong></strong></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="apexDetails" style="display: none;">
+        <img src="../static/apexlogo.jpg"
+            style="width: 40px !important; border-radius: 10px; margin-left:10px; margin-bottom: 15px" />
+        <button id="apexDetails" style="margin-left: 15px; margin-bottom: 15px" type="button"
+            class="btn btn-outline-dark text-right" data-toggle="modal" data-target="#apexModal">
+            <strong>Enter Apex Legends Details</strong>
+        </button>
+    </div>
+    <div>
+        <table style="display: none; width: 80%; margin: auto" id="apexTable"
+            class="table table-hover text-center table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Wins</th>
+                    <th scope="col">Kills</th>
+                    <th scope="col">Headshots</th>
+                    <th scope="col">Rank Score</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">Current Legend</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">
+                        <p id="alWins"></p>
+                    </td>
+                    <td>
+                        <p id="alKills"></p>
+                    </td>
+                    <td>
+                        <p id="headshots"></p>
+                    </td>
+                    <td>
+                        <p id="rankScore"></p>
+                    </td>
+                    <td>
+                        <p id="level"></p>
+                    </td>
+                    <td>
+                        <p id="activeLegend"></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 
 <script>
-    function handleClick() {
-        document.getElementById("fortniteDetails").style = "display: block"
+    function handleSubmit() {
+        if (document.getElementById("apex").checked || document.getElementById("fortnite").checked) {
+            document.getElementById("selectGameId").disabled = false
+        }
     }
 </script>
 
 <script>
-    function handleLogin() {
-        getFnStats(document.getElementById("platformId").value, document.getElementById("epicId").value)
+    function handleClick() {
+        const apexId = document.getElementById("apex")
+        apexId.checked ? document.getElementById("apexDetails").style.display = "block" : document.getElementById(
+            "fortniteDetails").style.display = "block"
     }
 </script>
+
+<script>
+    function handleFnLogin() {
+        getFnStats(document.getElementById("platformId").value, document.getElementById("epicId").value)
+        document.getElementById("fnTable").style.display = "table"
+    }
+</script>
+
+<script>
+    function handleApexLogin() {
+        getApexStats(document.getElementById("apexPlatformId").value, document.getElementById("originId").value)
+        document.getElementById("apexTable").style.display = "table"
+    }
+</script>
+
 <!--Fortnite API Call-->
 <script>
     async function getFnStats(platform, epicid) {
@@ -165,18 +307,18 @@
                 requestOptions)
             .then(res => res.json());
         console.log(res)
-        wins.innerHTML = `${res.lifeTimeStats[8].value} total wins`
-        top5.innerHTML = `You were top 5, ${res.lifeTimeStats[0].value} times `
-        top10.innerHTML = `You were top 10, ${res.lifeTimeStats[3].value} times`
-        matchesPlayed.innerHTML = `You've played ${res.lifeTimeStats[7].value} matches`
-        kills.innerHTML = `You have ${res.lifeTimeStats[10].value} kills`
-        kd.innerHTML = `${res.lifeTimeStats[11].value}kd`
+        wins.innerHTML = `${res.lifeTimeStats[8].value}`
+        top5.innerHTML = `${res.lifeTimeStats[0].value}  `
+        top10.innerHTML = `${res.lifeTimeStats[3].value}`
+        matchesPlayed.innerHTML = `${res.lifeTimeStats[7].value} `
+        kills.innerHTML = `${res.lifeTimeStats[10].value} `
+        kd.innerHTML = `${res.lifeTimeStats[11].value}`
     }
 </script>
 
 <!--Apex Legends API Call-->
 <script>
-    async function getApexStats() {
+    async function getApexStats(platform, originId) {
         var myHeaders = new Headers();
         myHeaders.append("TRN-Api-Key", "c824218b-5c57-4282-9955-dee41ae9af62");
 
@@ -193,16 +335,16 @@
         const activeLegend = document.getElementById('activeLegend')
 
         const res = await fetch(
-                "https://cors-anywhere.herokuapp.com/https://public-api.tracker.gg/v2/apex/standard/profile/origin/fully_assassin",
+                `https://cors-anywhere.herokuapp.com/https://public-api.tracker.gg/v2/apex/standard/profile/${platform}/${originId}`,
                 requestOptions)
             .then(res => res.json());
         console.log(res)
-        alKills.innerHTML = `${res.data.segments[0].stats.kills.displayValue} total Kills!`
-        headshots.innerHTML = `${res.data.segments[0].stats.headshots.displayValue} total Headshots!`
-        alWins.innerHTML = `${res.data.segments[0].stats.season4Wins.displayValue} total Wins!`
-        level.innerHTML = `Level ${res.data.segments[0].stats.level.displayValue}`
-        rankScore.innerHTML = `Rank Score: ${res.data.segments[0].stats.rankScore.displayValue}`
-        activeLegend.innerHTML = `Current Legend: ${res.data.metadata.activeLegendName}`
+        alKills.innerHTML = `${res.data.segments[0].stats.kills.displayValue}`
+        headshots.innerHTML = `${res.data.segments[0].stats.headshots.displayValue}`
+        alWins.innerHTML = `${res.data.segments[0].stats.season4Wins.displayValue}`
+        level.innerHTML = `${res.data.segments[0].stats.level.displayValue}`
+        rankScore.innerHTML = `${res.data.segments[0].stats.rankScore.displayValue}`
+        activeLegend.innerHTML = `${res.data.metadata.activeLegendName}`
     }
 </script>
 
