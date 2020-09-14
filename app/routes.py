@@ -1,19 +1,12 @@
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import render_template
 from app import app
 
-# Task = models.Task
-
+#Home Page Route
 @app.route('/')
 def index():
     return render_template("index.html")
 
-@app.route('/steam/', methods = ['GET'])
-def getSteamGames():
-    steamId = request.form.get('steamId')
-
-    # getGames(steamId)
-    return redirect(url_for('index'))
-
+#Stats Page Route
 @app.route('/stats')
 def add_stats():
     return render_template("stats.html")
