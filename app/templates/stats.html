@@ -151,9 +151,12 @@
             background-color: gray;
         }
     </style>
+
     <div class="carousel-inner" role="listbox">
         <div class="carousel-item active" style="background-image: url(../static/gamecollage.jpg); height: 300px"></div>
     </div>
+
+    <!--Displays Fortnite and Apex Legends Stats-->
     <p class="display-4" style="text-align: center">Game Statistics Tracker</p>
     <button type="button" class="btn btn-primary text-right" data-toggle="modal"
         style="margin-top: 15px; margin-left: 15px; margin-bottom: 10px" data-target="#selectGameModal">
@@ -166,9 +169,9 @@
             class="btn btn-outline-dark  text-right" data-toggle="modal" data-target="#fortniteModal">
             <strong>Enter Fortnite Details</strong>
         </button>
-
     </div>
 
+    <!--Fortnite Stats Table-->
     <div>
         <table style="display: none; width: 80%; margin: auto; margin-bottom: 15px" id="fnTable"
             class="table table-hover text-center table-dark">
@@ -215,6 +218,8 @@
             <strong>Enter Apex Legends Details</strong>
         </button>
     </div>
+
+    <!--Apex Legends Stats Table-->
     <div>
         <table style="display: none; width: 80%; margin: auto" id="apexTable"
             class="table table-hover text-center table-dark">
@@ -254,6 +259,7 @@
     </div>
 </body>
 
+<!--This script enables the submit button after a radio button is selected-->
 <script>
     function handleSubmit() {
         if (document.getElementById("apex").checked || document.getElementById("fortnite").checked) {
@@ -262,6 +268,7 @@
     }
 </script>
 
+<!--Conditional Rendering on Fortnite and Apex Stats Button-->
 <script>
     function handleClick() {
         const apexId = document.getElementById("apex")
@@ -270,6 +277,7 @@
     }
 </script>
 
+<!--Passes all data in the modal form to the FortniteAPI-->
 <script>
     function handleFnLogin() {
         getFnStats(document.getElementById("platformId").value, document.getElementById("epicId").value)
@@ -277,6 +285,7 @@
     }
 </script>
 
+<!--Passes all data in the modal form to the ApexLegendsAPI-->
 <script>
     function handleApexLogin() {
         getApexStats(document.getElementById("apexPlatformId").value, document.getElementById("originId").value)
@@ -289,12 +298,12 @@
     async function getFnStats(platform, epicid) {
         var myHeaders = new Headers();
         myHeaders.append("TRN-Api-Key", "c824218b-5c57-4282-9955-dee41ae9af62");
-
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow'
         };
+
         const top10 = document.getElementById('top10');
         const top5 = document.getElementById('top5');
         const wins = document.getElementById('wins');
@@ -321,12 +330,12 @@
     async function getApexStats(platform, originId) {
         var myHeaders = new Headers();
         myHeaders.append("TRN-Api-Key", "c824218b-5c57-4282-9955-dee41ae9af62");
-
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow'
         };
+
         const alKills = document.getElementById('alKills');
         const headshots = document.getElementById('headshots');
         const alWins = document.getElementById('alWins');
@@ -348,7 +357,7 @@
     }
 </script>
 
-
+<!--Bootstrap Script Support-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
 </script>

@@ -28,11 +28,6 @@
         <a class="nav-link" href="/stats">Game Stats</a>
       </li>
     </ul>
-    <!-- <li class="list-inline-item" style="margin-right: 40px;">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#steamModal">
-        Access Steam Game List
-      </button>
-    </li> -->
     </ul>
   </div>
   <div>
@@ -78,7 +73,7 @@
     <div class="carousel-item active" style="background-image: url(../static/gamecollage.jpg); height: 300px"></div>
   </div>
   <div>
-    <!--Current Steam Games-->
+    <!--Displays Top 5 Most played Steam Games-->
     <h1 class="display-4" style="text-align: center">Made by Gamers for Gamers</h1>
     <div class="container">
       <div class="row">
@@ -95,6 +90,7 @@
     <ul class="list-inline" id="top5" style="display: flex !important; margin: 67px 0px 70px 10px">
     </ul>
 
+    <!--This method calls the SteamAPI with the modal form values and does conditional rendering-->
     <script>
       function handleClick() {
         getGames(document.getElementById('steamId').value)
@@ -104,7 +100,8 @@
         }
       }
     </script>
-    <!--SteamAPI call and game filter-->
+
+    <!--SteamAPI call and top 5 game filter-->
     <script>
       //Gets the top 5 most played games
       function getTop5(games) {
@@ -131,7 +128,6 @@
           li.style.flex = "1 1 100%"
           li.style.marginLeft = "40px"
           let div = document.createElement("div")
-          //li.style.margin = "11px"
           let pname = document.createElement("p")
           pname.classList.add("h6")
           let img = document.createElement("img")
@@ -148,15 +144,10 @@
           li.appendChild(div)
           document.getElementById("top5").appendChild(li)
         })
-
-        /*gameName.innerHTML = `${res.response.games[0].name}`;
-        timePlayed.innerHTML = `${res.response.games[0].playtime_forever} hours`
-        const appId = `${res.response.games[0].appid}`
-        gameIcon.src =
-          `http://media.steampowered.com/steamcommunity/public/images/apps/${appId}/${res.response.games[0].img_logo_url}.jpg`*/
       }
     </script>
 
+    <!--Bootstrap Script Support-->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
